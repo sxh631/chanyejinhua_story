@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>横琴粤澳深度合作区发展成果</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c2b4b, #1a4a7a);
+            color: #e6f7ff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .main-title {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(79, 172, 254, 0.3);
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            color: #a8edea;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+        }
+        
+        .stat-card:nth-child(1)::before { background: linear-gradient(to right, #ff7e5f, #feb47b); }
+        .stat-card:nth-child(2)::before { background: linear-gradient(to right, #a8edea, #4facfe); }
+        .stat-card:nth-child(3)::before { background: linear-gradient(to right, #00cdac, #02aab0); }
+        .stat-card:nth-child(4)::before { background: linear-gradient(to right, #d66d75, #daa357); }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .stat-value {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 20px 0 10px;
+            background: linear-gradient(to right, #ffffff, #a8edea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(79, 172, 254, 0.2);
+        }
+        
+        .stat-label {
+            font-size: 1.3rem;
+            color: #b3e0ff;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+        
+        .growth-icon {
+            display: inline-block;
+            margin-left: 8px;
+            color: #00cdac;
+            font-weight: bold;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+            padding: 20px;
+        }
+        
+        /* 装饰元素 */
+        .decoration {
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+        
+        .circle-1 {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(#4facfe, transparent 70%);
+            top: -100px;
+            left: -100px;
+        }
+        
+        .circle-2 {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(#00cdac, transparent 70%);
+            bottom: -75px;
+            right: -75px;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stat-value {
+                font-size: 2.8rem;
+            }
+            
+            .stat-label {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 装饰元素 -->
+        <div class="decoration circle-1"></div>
+        <div class="decoration circle-2"></div>
+        
+        <div class="header">
+            <h1 class="main-title">横琴粤澳深度合作区发展成果</h1>
+            <p class="subtitle">"澳人澳税"政策引领下的制度创新试验田 | 2021-2023年关键突破</p>
+        </div>
+        
+        <div class="stats-grid">
+            <!-- 澳资企业入驻 -->
+            <div class="stat-card">
+                <div class="stat-value">1,200+</div>
+                <div class="stat-label">澳资企业入驻</div>
+            </div>
+            
+            <!-- 澳门居民增长 -->
+            <div class="stat-card">
+                <div class="stat-value">560%<span class="growth-icon">↑</span></div>
+                <div class="stat-label">澳门居民增长</div>
+            </div>
+            
+            <!-- 产业园区产值 -->
+            <div class="stat-card">
+                <div class="stat-value">200亿</div>
+                <div class="stat-label">产业园区产值</div>
+            </div>
+            
+            <!-- 土地收益留存澳门 -->
+            <div class="stat-card">
+                <div class="stat-value">80%</div>
+                <div class="stat-label">土地收益留存澳门</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>数据来源：横琴粤澳深度合作区管理局 | 2021-2023年</p>
+        </div>
+    </div>
+    
+    <script>
+        // 添加卡片动画效果
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+                this.style.boxShadow = '0 15px 40px rgba(0, 0, 0, 0.4)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.3)';
+            });
+        });
+    </script>
+</body>
+</html>
