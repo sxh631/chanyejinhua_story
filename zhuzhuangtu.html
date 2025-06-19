@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>横琴主要经济指标对比</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36D399',
+                        accent: '#FFAB00',
+                        danger: '#FF6B6B'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .chart-container {
+                height: 400px;
+            }
+            .tab-active {
+                @apply bg-primary text-white;
+            }
+            .tab-inactive {
+                @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-center text-gray-800 mb-6">
+            横琴主要经济指标对比
+        </h1>
+        
+        <!-- 标签页导航 -->
+        <div class="flex flex-wrap justify-center gap-2 mb-6">
+            <button id="btn-gdp" class="px-4 py-2 rounded-lg tab-active transition-all duration-300">
+                <i class="fa fa-line-chart mr-2"></i>地区生产总值
+            </button>
+            <button id="btn-industry" class="px-4 py-2 rounded-lg tab-inactive transition-all duration-300">
+                <i class="fa fa-cogs mr-2"></i>产业结构
+            </button>
+            <button id="btn-trade" class="px-4 py-2 rounded-lg tab-inactive transition-all duration-300">
+                <i class="fa fa-globe mr-2"></i>进出口
+            </button>
+            <button id="btn-investment" class="px-4 py-2 rounded-lg tab-inactive transition-all duration-300">
+                <i class="fa fa-building mr-2"></i>澳资企业
+            </button>
+        </div>
+        
+        <!-- 图表容器 -->
+        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6">
+            <div class="chart-container">
+                <canvas id="mainChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 图表数据
+        const chartData = {
+            gdp: {
+                labels: ['2024年', '2025年一季度'],
+                datasets: [
+                    {
+                        label: '地区生产总值（亿元）',
+                        data: [538.48, 135.78],
+                        backgroundColor: 'rgba(22, 93, 255, 0.7)',
+                        borderColor: 'rgba(22, 93, 255, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '增长率（%）',
+                        data: [5.3, 9.7],
+                        backgroundColor: 'rgba(54, 211, 153, 0.7)',
+                        borderColor: 'rgba(54, 211, 153, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            industry: {
+                labels: ['2024年', '2025年一季度'],
+                datasets: [
+                    {
+                        label: '第二产业增加值（亿元）',
+                        data: [98.42, 26.87],
+                        backgroundColor: 'rgba(255, 171, 0, 0.7)',
+                        borderColor: 'rgba(255, 171, 0, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '第三产业增加值（亿元）',
+                        data: [440.06, 124.99],
+                        backgroundColor: 'rgba(22, 93, 255, 0.7)',
+                        borderColor: 'rgba(22, 93, 255, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            trade: {
+                labels: ['2024年', '2025年一季度'],
+                datasets: [
+                    {
+                        label: '出口总额（亿元）',
+                        data: [141.48, 59.73],
+                        backgroundColor: 'rgba(54, 211, 153, 0.7)',
+                        borderColor: 'rgba(54, 211, 153, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '进口总额（亿元）',
+                        data: [116.01, 49.46],
+                        backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            investment: {
+                labels: ['2024年', '2025年一季度'],
+                datasets: [
+                    {
+                        label: '澳资经营主体（户）',
+                        data: [6798, 7054],
+                        backgroundColor: 'rgba(22, 93, 255, 0.7)',
+                        borderColor: 'rgba(22, 93, 255, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '增长率（%）',
+                        data: [12.9, 13.8],
+                        backgroundColor: 'rgba(255, 171, 0, 0.7)',
+                        borderColor: 'rgba(255, 171, 0, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y1'
+                    }
+                ]
+            }
+        };
+
+        // 图表配置
+        const chartConfig = {
+            type: 'bar',
+            data: chartData.gdp,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '金额（亿元）'
+                        }
+                    },
+                    y1: {
+                        beginAtZero: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: '增长率（%）'
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutQuart'
+                }
+            }
+        };
+
+        // 创建图表
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        const mainChart = new Chart(ctx, chartConfig);
+
+        // 标签页切换逻辑
+        document.getElementById('btn-gdp').addEventListener('click', function() {
+            updateChart('gdp', this);
+        });
+
+        document.getElementById('btn-industry').addEventListener('click', function() {
+            updateChart('industry', this);
+        });
+
+        document.getElementById('btn-trade').addEventListener('click', function() {
+            updateChart('trade', this);
+        });
+
+        document.getElementById('btn-investment').addEventListener('click', function() {
+            updateChart('investment', this);
+        });
+
+        // 更新图表数据和标签页样式
+        function updateChart(dataType, button) {
+            // 更新图表数据
+            mainChart.data = chartData[dataType];
+            mainChart.update();
+            
+            // 更新标签页样式
+            document.querySelectorAll('button').forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('tab-inactive');
+            });
+            button.classList.remove('tab-inactive');
+            button.classList.add('tab-active');
+        }
+    </script>
+</body>
+</html>
