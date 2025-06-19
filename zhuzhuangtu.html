@@ -25,46 +25,52 @@
     
     <style type="text/tailwindcss">
         @layer utilities {
-            .chart-container {
-                height: 400px;
-            }
             .tab-active {
                 @apply bg-primary text-white;
             }
             .tab-inactive {
                 @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
             }
+            .chart-container {
+                height: calc(100vh - 120px);
+            }
+            .fullscreen {
+                height: 100vh !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-50 font-sans">
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-        <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-center text-gray-800 mb-6">
-            横琴主要经济指标对比
-        </h1>
-        
-        <!-- 标签页导航 -->
-        <div class="flex flex-wrap justify-center gap-2 mb-6">
-            <button id="btn-gdp" class="px-4 py-2 rounded-lg tab-active transition-all duration-300">
-                <i class="fa fa-line-chart mr-2"></i>地区生产总值
-            </button>
-            <button id="btn-industry" class="px-4 py-2 rounded-lg tab-inactive transition-all duration-300">
-                <i class="fa fa-cogs mr-2"></i>产业结构
-            </button>
-            <button id="btn-trade" class="px-4 py-2 rounded-lg tab-inactive transition-all duration-300">
-                <i class="fa fa-globe mr-2"></i>进出口
-            </button>
-            <button id="btn-investment" class="px-4 py-2 rounded-lg tab-inactive transition-all duration-300">
-                <i class="fa fa-building mr-2"></i>澳资企业
+<body class="bg-gray-50 font-sans m-0 p-0 min-h-screen">
+    <div class="w-full bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-primary">横琴主要经济指标对比</h1>
+            <button id="fullscreenBtn" class="text-primary hover:text-primary/80 transition-colors">
+                <i class="fa fa-expand"></i>
             </button>
         </div>
-        
-        <!-- 图表容器 -->
-        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6">
-            <div class="chart-container">
-                <canvas id="mainChart"></canvas>
-            </div>
-        </div>
+    </div>
+    
+    <!-- 标签页导航 -->
+    <div class="flex flex-wrap justify-center gap-2 p-4 bg-gray-100">
+        <button id="btn-gdp" class="px-4 py-2 rounded-lg tab-active transition-all duration-300">
+            <i class="fa fa-line-chart mr-2"></i>地区生产总值
+        </button>
+        <button id="btn-industry" class="px-4 py-2 rounded-lg tab-inactive transition-all duration-300">
+            <i class="fa fa-cogs mr-2"></i>产业结构
+        </button>
+        <button id="btn-trade" class="px-4 py-2 rounded-lg tab-inactive transition-all duration-300">
+            <i class="fa fa-globe mr-2"></i>进出口
+        </button>
+        <button id="btn-investment" class="px-4 py-2 rounded-lg tab-inactive transition-all duration-300">
+            <i class="fa fa-building mr-2"></i>澳资企业
+        </button>
+    </div>
+    
+    <!-- 图表容器 -->
+    <div class="bg-white chart-container w-full">
+        <canvas id="mainChart" class="w-full h-full"></canvas>
     </div>
 
     <script>
@@ -221,13 +227,40 @@
             mainChart.update();
             
             // 更新标签页样式
-            document.querySelectorAll('button').forEach(btn => {
+            document.querySelectorAll('button[id^="btn-"]').forEach(btn => {
                 btn.classList.remove('tab-active');
                 btn.classList.add('tab-inactive');
             });
             button.classList.remove('tab-inactive');
             button.classList.add('tab-active');
         }
+
+        // 全屏切换功能
+        document.getElementById('fullscreenBtn').addEventListener('click', function() {
+            const chartContainer = document.querySelector('.chart-container');
+            const icon = this.querySelector('i');
+            
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`全屏请求失败: ${err.message}`);
+                });
+                chartContainer.classList.add('fullscreen');
+                icon.classList.remove('fa-expand');
+                icon.classList.add('fa-compress');
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    chartContainer.classList.remove('fullscreen');
+                    icon.classList.remove('fa-compress');
+                    icon.classList.add('fa-expand');
+                }
+            }
+        });
+
+        // 窗口大小变化时重绘图表
+        window.addEventListener('resize', function() {
+            mainChart.resize();
+        });
     </script>
 </body>
 </html>
